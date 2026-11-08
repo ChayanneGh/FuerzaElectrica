@@ -1,0 +1,38 @@
+html,body {
+    background-color: #FEFFFE;
+}
+
+body {
+
+}
+
+header {
+    --BB: 10px;
+    border-bottom-left-radius: var(--BB);
+    border-bottom-right-radius: var(--BB);
+    background-color: #006E90;
+    padding: 20px;
+    text-align: center;
+}
+
+main {
+    padding: 20px;
+    height: 100%;
+}
+
+footer {
+        --BB: 10px;
+    border-top-left-radius: var(--BB);
+    border-top-right-radius: var(--BB);
+    background-color: #006E90;
+    padding: 10px;
+    text-align: center;
+}
+
+colotes {
+    background-color: #FEFFFE;
+    background-color: #E9EBF8;
+    background-color: #B4B8C5;
+    background-color: #006E90;
+    background-color: #12100E;
+}
