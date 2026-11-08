@@ -18,6 +18,10 @@ header {
 main {
     padding: 20px;
     height: 100%;
+
+    button {
+        margin-top: 10px;
+    }
 }
 
 footer {
