@@ -2,7 +2,7 @@ Autores:
 
     Chayanne        #Bueno Programando
 
-    Yaneyris        #Buenos Dias
+    Yaneyri         #Buenos Dias
 
     Dariel          #Buenas Tardes
 
