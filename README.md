@@ -6,27 +6,16 @@ Arquitectura:
 simulador-fuerza-electrica/
 
 ├── assets/
-
-│   ├── css/
-
-│   │   └── styles.css          # Estilos personalizados y ajustes sobre Bootstrap
-
-│   ├── js/
-
-│   │   ├── physics.js          # Motor de cálculo (Ley de Coulomb)
-
-│   │   ├── UI.js               # Eventos, manipulación del DOM y Anime.js
-
-│   │   └── app.js              # Controlador principal (inicialización y puente)
-
-│   └── vendor/                 # CDN o librerías locales (Bootstrap, Anime.js)
-
-├── api/                        # (OPCIONAL: Solo si usas PHP)
-
-│   └── save_simulation.php     # Endpoint para guardar/cargar resultados en DB/JSON
-
-├── index.html                  # Interfaz principal del simulador
-
+│....├── css/
+│....│....└── styles.css          # Estilos personalizados y ajustes sobre Bootstrap
+│....├── js/
+│....│....├── physics.js          # Motor de cálculo (Ley de Coulomb)
+│....│....├── UI.js               # Eventos, manipulación del DOM y Anime.js
+│....│....└── app.js              # Controlador principal (inicialización y puente)
+│....└── vendor/                  # CDN o librerías locales (Bootstrap, Anime.js)
+├── api/                          # (OPCIONAL: Solo si usas PHP)
+│....└── save_simulation.php      # Endpoint para guardar/cargar resultados en DB/JSON
+├── index.html                    # Interfaz principal del simulador
 └── README.md
 
 
@@ -68,30 +57,18 @@ Si agregas PHP, mantén el motor interactivo 100% en el lado del cliente (JS) pa
 Flujo de Datos Visual
 
 [ Usuario ajusta sliders/inputs ]
-
-                │
-
-                ▼
-
-      [ UI.js captura cambios ]
-
-                │
-
-                ▼
-
-  [ physics.js calcula F = k|q1·q2|/r² ]
-
-                │
-
-                ├────────────────────────┐
-
-                ▼                        ▼
-
+................│
+................▼
+........[ UI.js captura cambios ]
+................│
+................▼
+....[ physics.js calcula F = k|q1·q2|/r² ]
+................│
+................├────────────────────────┐
+................▼........................▼
 [ Actualiza valores en DOM ]   [ Anime.js anima vectores y partículas ]
-
-                │
-
-                ▼ (Opcional)
+................│
+................▼ (Opcional)
 
 [ PHP API: Guarda registro / Historial ]
 
