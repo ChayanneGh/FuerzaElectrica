@@ -24,7 +24,7 @@ export function calculateForce(carga1, carga2, distancia) {
     // F = k * |q1 * q2| / r^2
     const fuerza = k * Math.abs(q1 * q2) / (r ** 2);
 
-    const esRepulcion = (q1 > 0 && q2 > 0) || (q1 < 0 && q2 < 0);
+    const esRepulcion = (carga1 > 0 && carga2 > 0) || (carga1 < 0 && carga2 < 0);
 
     const type = esRepulcion ? "repulsión" : "atracción";
 
