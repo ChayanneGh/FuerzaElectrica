@@ -1,6 +1,6 @@
 Autores:
 
-    Chayanne        #Bueno Programando
+    Chayanne        #Buenos Programas
 
     Yaneyri         #Buenos Dias
 
@@ -44,7 +44,7 @@ Descripción de Componentes
 
     index.html: Estructura dividida en dos columnas principales mediante la grilla de Bootstrap:
 
-        Panel de Control (Izquierda): Inputs numéricos y sliders para controlar las cargas ($q_1, q_2$ en $\mu\text{C}$ o $\text{C}$) y la distancia ($r$ en metros o cm). Botón de simular/pausar y selector de signo de carga (+/-).
+        Panel de Control (Izquierda): Inputs numéricos y sliders para controlar las cargas (q1, q2 en microC o C) y la distancia (r en metros o cm). Botón de simular/pausar y selector de signo de carga (+/-).
 
         Lienzo de Simulación (Derecha): Área visual (<canvas> de HTML5 o contenedores <div> interactivos).
 
@@ -58,9 +58,9 @@ Descripción de Componentes
 
     physics.js: Módulo puro de JS sin interactuar con el DOM.
 
-        Contiene la constante de Coulomb ($k = 8.9875 \times 10^9 \text{ N}\cdot\text{m}^2/\text{C}^2$).
+        Contiene la constante de Coulomb (k = 8.9875 x10^9 Nm^2/C^2).
 
-        Funciones para calcular la fuerza $F$, determinar si es de atracción o repulsión, y formatear la notación científica.
+        Funciones para calcular la fuerza F, determinar si es de atracción o repulsión, y formatear la notación científica.
 
     UI.js: Escucha los cambios en los inputs y sliders. Actualiza los valores de la fuerza en tiempo real y desencadena las animaciones de Anime.js sobre los elementos visuales de las cargas y los vectores.
 
