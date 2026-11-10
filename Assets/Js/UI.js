@@ -1,0 +1,1 @@
+import {comprobaciones} from 'App.js'; //es una mausque herramienta para mas tarde
