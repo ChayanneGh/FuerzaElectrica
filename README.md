@@ -74,7 +74,7 @@ Si agregas PHP, mantén el motor interactivo 100% en el lado del cliente (JS) pa
     Generar o descargar reportes en texto/PDF con los datos de las simulaciones realizadas.
 
 
-    *Opinico personal (Chayanne):*
+    *Opinico personal (Chayanne):
         siento que es major no complicarse con el cuardado local y mejor se crea diccionario preferiblemente en Js para guardar un maximo de 10 cambios, en retrospectiva solo se guardarian los datos del input + resultado, este diccionario al ser estatico se eliminaria al recargar la recargar la pagina, de modo que no ocuparia espacio innecesario 
 
 Flujo de Datos Visual
