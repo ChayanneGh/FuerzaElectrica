@@ -1,0 +1,23 @@
+---
+title: "Pendientes"
+description: "Estado actual del Simulador de Fuerza Eléctrica y tareas por completar."
+---
+
+## Integración con la interfaz
+
+El cálculo todavía no está conectado al botón **Calcular Fuerza** de `Index.html`:
+
+- El botón llama a `calculateForce()`, que aún no está definida.
+- `comprobaciones` todavía no devuelve sus resultados ni usa `export`, aunque `UI.js` la importa.
+- `UI.js` se carga sin `type="module"`, y los `import` usan rutas como `'Physics.js'` en lugar de `'./Physics.js'`. El navegador necesita ambas cosas para cargar los módulos.
+
+## Comprobaciones por agregar
+
+- Comprobar que cambiar el signo de una carga invierte el sentido de la fuerza.
+- Comprobar que la fuerza es la misma sobre ambas cargas (principio de acción y reacción).
+
+## Funcionalidades planeadas
+
+- Una opción que muestre las fórmulas.
+- Un aviso cuando la fuerza supere un límite indicado.
+- Una tabla de fuerzas para cinco distancias positivas.

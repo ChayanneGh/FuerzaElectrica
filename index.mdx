@@ -1,0 +1,38 @@
+---
+title: "Simulador de Fuerza Eléctrica"
+description: "Simulador web que calcula la fuerza eléctrica entre dos cargas puntuales con la Ley de Coulomb."
+---
+
+El Simulador de Fuerza Eléctrica es una aplicación web que calcula la fuerza entre dos cargas puntuales a partir de sus valores y de la distancia que las separa. Usa HTML, Bootstrap 5 y JavaScript, y hace todo el cálculo en el navegador.
+
+## Qué hace
+
+- Recibe la carga 1 y la carga 2 (en µC) y la distancia entre ellas (en metros).
+- Calcula la magnitud de la fuerza con `F = k·|q1·q2| / r²`.
+- Indica si la fuerza es de atracción o de repulsión.
+- Muestra el resultado en notación decimal o científica, según su tamaño.
+
+## Ejecutar el simulador
+
+1. Clona el repositorio.
+2. Sirve la carpeta del proyecto con un servidor local y abre `Index.html` en el navegador.
+
+<Note>
+  Los archivos de JavaScript usan `import` y `export`. El navegador solo los carga como módulos cuando la página se sirve desde un servidor, no al abrir `Index.html` directamente como archivo.
+</Note>
+
+## Autores
+
+- Chayanne
+- Yaneyri
+- Dariel
+- Enmanuel
+
+<CardGroup cols={2}>
+  <Card title="Arquitectura" icon="sitemap" href="/arquitectura">
+    Estructura del proyecto y flujo de datos.
+  </Card>
+  <Card title="Cálculo de la fuerza" icon="bolt" href="/calculo-fuerza">
+    Referencia de `fuerzaElectrica` y de las comprobaciones.
+  </Card>
+</CardGroup>

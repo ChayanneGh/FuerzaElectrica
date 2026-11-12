@@ -1,0 +1,23 @@
+{
+  "$schema": "https://mintlify.com/docs.json",
+  "theme": "mint",
+  "name": "Simulador de Fuerza Eléctrica",
+  "colors": {
+    "primary": "#006E90",
+    "light": "#E9EBF8",
+    "dark": "#006E90"
+  },
+  "favicon": "/Assets/Icon/KirbElectronHead.ico",
+  "navigation": {
+    "groups": [
+      {
+        "group": "Introducción",
+        "pages": ["index", "arquitectura"]
+      },
+      {
+        "group": "Referencia",
+        "pages": ["calculo-fuerza", "pendientes"]
+      }
+    ]
+  }
+}

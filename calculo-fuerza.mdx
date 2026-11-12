@@ -1,0 +1,70 @@
+---
+title: "Cálculo de la fuerza"
+description: "Referencia de la función fuerzaElectrica y de las comprobaciones de la Ley de Coulomb."
+---
+
+## `fuerzaElectrica(q1, q2, r)`
+
+`Physics.js` exporta `fuerzaElectrica`, que calcula la fuerza entre dos cargas puntuales con la Ley de Coulomb:
+
+```text
+F = k·|q1·q2| / r²
+k = 8.9875e9 N·m²/C²
+```
+
+### Parámetros
+
+<ParamField path="q1" type="number" required>
+  Carga 1, en coulombs (C).
+</ParamField>
+
+<ParamField path="q2" type="number" required>
+  Carga 2, en coulombs (C).
+</ParamField>
+
+<ParamField path="r" type="number" required>
+  Distancia entre las cargas, en metros (m). Debe ser mayor que `0`.
+</ParamField>
+
+<Warning>
+  La función espera las cargas en coulombs, pero los inputs de la interfaz están en µC. Multiplica cada carga por `1e-6` antes de llamar a `fuerzaElectrica`.
+</Warning>
+
+### Valor de retorno
+
+<ResponseField name="Magnitud" type="number">
+  Magnitud de la fuerza en newtons.
+</ResponseField>
+
+<ResponseField name="Tipo" type="string">
+  `"Repulsion."` si las cargas tienen el mismo signo. `"Atraccion."` si tienen signos opuestos.
+</ResponseField>
+
+<ResponseField name="Formato" type="string">
+  La magnitud como texto con 4 decimales y la unidad, por ejemplo `"21.5700 N."`. Si la fuerza es mayor o igual a `1e4` o menor o igual a `1e-4`, usa notación científica, por ejemplo `"8.9875e+9 N."`.
+</ResponseField>
+
+### Casos especiales
+
+- Si `r` es `0` o negativo, la función lanza `Error("La distancia entre las cargas no puede ser cero ni menor.")`.
+- Si `q1` o `q2` es `0`, la función devuelve `{ magnitud: 0, tipo: "Nula.", formato: "0 N" }`. Estos campos están en minúscula, a diferencia del caso normal.
+
+### Ejemplo
+
+```js
+import { fuerzaElectrica } from './Physics.js';
+
+const resultado = fuerzaElectrica(2e-6, 3e-6, 0.05);
+// { Magnitud: 21.57, Tipo: "Repulsion.", Formato: "21.5700 N." }
+```
+
+## Comprobaciones
+
+`App.js` define `comprobaciones(carga1, carga2, distancia)`, con las pruebas pedidas por el instructor. La función llama a `fuerzaElectrica` y compara los resultados con una tolerancia de `1e-5`.
+
+| Prueba | Qué verifica | Variable |
+| --- | --- | --- |
+| Distancia doble | Al duplicar `distancia`, la fuerza es la cuarta parte. | `CumpleCuartaParte` |
+| Carga doble | Al duplicar `carga1`, la fuerza es el doble. | `cumpleDobleFuerza` |
+
+Las pruebas que faltan están en [Pendientes](/pendientes).

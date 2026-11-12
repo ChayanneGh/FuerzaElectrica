@@ -1,0 +1,60 @@
+---
+title: "Arquitectura"
+description: "Estructura de carpetas, componentes y flujo de datos del Simulador de Fuerza Eléctrica."
+---
+
+## Estructura del proyecto
+
+```text
+FuerzaElectrica/
+├── Api/
+│   └── Save_Simulation.php   # Opcional: guardar historial de simulaciones
+├── Assets/
+│   ├── Css/
+│   │   └── Styles.css        # Estilos propios sobre Bootstrap
+│   ├── Icon/                 # Íconos del sitio
+│   └── Js/
+│       ├── Physics.js        # Motor de cálculo (Ley de Coulomb)
+│       ├── UI.js             # Eventos y manipulación del DOM
+│       └── App.js            # Puente entre UI y cálculo, y comprobaciones
+├── Index.html                # Interfaz principal del simulador
+└── README.md
+```
+
+## Componentes
+
+### Capa de presentación
+
+`Index.html` usa la grilla de Bootstrap para dividir la página en dos columnas:
+
+- **Controles de simulación (izquierda):** inputs para la carga 1 (µC), la carga 2 (µC) y la distancia (m), y el botón **Calcular Fuerza**.
+- **Resultados (derecha):** el párrafo `#forceResult`, donde se muestra la fuerza calculada.
+
+`Styles.css` define los colores del encabezado y el pie de página (`#006E90`) y el fondo (`#FEFFFE`).
+
+### Capa de lógica
+
+- **`Physics.js`:** módulo de cálculo puro, sin acceso al DOM. Contiene la constante de Coulomb y la función [`fuerzaElectrica`](/calculo-fuerza).
+- **`UI.js`:** escucha los inputs y actualiza los resultados en la página.
+- **`App.js`:** conecta la captura de datos de `UI.js` con el cálculo de `Physics.js`. También contiene las [comprobaciones](/calculo-fuerza#comprobaciones) pedidas por el instructor.
+
+### Capa de backend (opcional)
+
+El cálculo se hace por completo en el navegador. `Api/Save_Simulation.php` está reservado para guardar un historial de simulaciones, pero todavía no tiene implementación.
+
+La propuesta actual del equipo es no usar almacenamiento persistente. En su lugar, un diccionario en JavaScript guardaría como máximo los últimos 10 cálculos (datos de entrada y resultado), y se borraría al recargar la página.
+
+## Flujo de datos
+
+```text
+[ El usuario ingresa cargas y distancia ]
+                 │
+                 ▼
+      [ UI.js captura los valores ]
+                 │
+                 ▼
+[ Physics.js calcula F = k·|q1·q2| / r² ]
+                 │
+                 ▼
+  [ UI.js muestra el resultado en la página ]
+```
