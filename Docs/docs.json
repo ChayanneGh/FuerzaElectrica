@@ -7,7 +7,7 @@
     "light": "#E9EBF8",
     "dark": "#006E90"
   },
-  "favicon": "/Assets/Icon/KirbElectronHead.ico",
+  "favicon": "/images/favicon.ico",
   "navigation": {
     "groups": [
       {
