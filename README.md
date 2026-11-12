@@ -64,7 +64,7 @@ Descripción de Componentes
 
     UI.js: Escucha los cambios en los inputs y sliders. Actualiza los valores de la fuerza en tiempo real y desencadena las animaciones de Anime.js sobre los elementos visuales de las cargas y los vectores.
 
-    app.js: Vincula la captura de entradas de UI.js con los cálculos de physics.js y pasa el resultado de vuelta a la UI.
+    app.js: Vincula la captura de entradas de UI.js con los cálculos de physics.js y pasa el resultado de vuelta a la UI. Tambien bontiene los Tests Pedidos por por el instructor
 
 3. Capa de Backend Opcional (PHP)
 Si agregas PHP, mantén el motor interactivo 100% en el lado del cliente (JS) para garantizar fluidez inmediata sin recargas de página. PHP solo interviene para:
@@ -72,6 +72,10 @@ Si agregas PHP, mantén el motor interactivo 100% en el lado del cliente (JS) pa
     Guardar un historial de experimentos o casos de prueba mediante solicitudes fetch() de JavaScript hacia api/save_simulation.php.
 
     Generar o descargar reportes en texto/PDF con los datos de las simulaciones realizadas.
+
+
+    *Opinico personal (Chayanne):*
+        siento que es major no complicarse con el cuardado local y mejor se crea diccionario preferiblemente en Js para guardar un maximo de 10 cambios, en retrospectiva solo se guardarian los datos del input + resultado, este diccionario al ser estatico se eliminaria al recargar la recargar la pagina, de modo que no ocuparia espacio innecesario 
 
 Flujo de Datos Visual
 
