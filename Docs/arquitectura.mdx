@@ -8,15 +8,15 @@ description: "Estructura de carpetas, componentes y flujo de datos del Simulador
 ```text
 FuerzaElectrica/
 ├── Api/
-│   └── Save_Simulation.php   # Opcional: guardar historial de simulaciones
+│   └── Save_Simulation.php   # Reservado para guardar simulaciones (sin implementar)
 ├── Assets/
 │   ├── Css/
 │   │   └── Styles.css        # Estilos propios sobre Bootstrap
 │   ├── Icon/                 # Íconos del sitio
 │   └── Js/
-│       ├── Physics.js        # Motor de cálculo (Ley de Coulomb)
-│       ├── UI.js             # Eventos y manipulación del DOM
-│       └── App.js            # Puente entre UI y cálculo, y comprobaciones
+│       ├── Physics.js        # Clase CoulombPhysics: cálculo y comprobaciones
+│       ├── UI.js             # Eventos, DOM y animaciones
+│       └── App.js            # Envío de simulaciones al backend
 ├── Index.html                # Interfaz principal del simulador
 └── README.md
 ```
@@ -27,22 +27,52 @@ FuerzaElectrica/
 
 `Index.html` usa la grilla de Bootstrap para dividir la página en dos columnas:
 
-- **Controles de simulación (izquierda):** inputs para la carga 1 (µC), la carga 2 (µC) y la distancia (m), y el botón **Calcular Fuerza**.
-- **Resultados (derecha):** el párrafo `#forceResult`, donde se muestra la fuerza calculada.
+- **Controles de simulación (izquierda):** inputs `#carga1` y `#carga2` (en coulombs), `#distancia` (en metros, mínimo `0.0001`) y el botón `#btnSimular` (**Calcular Fuerza**). Los valores iniciales son `0.000002`, `-0.000003` y `0.5`.
+- **Área de visualización (derecha):** dos partículas, `#particula1` (q₁) y `#particula2` (q₂), y el texto `#txtTipoInteraccion`.
+- **Resultados principales:** `#forceResult` muestra la fuerza con formato y `#txtTipo` muestra el tipo de interacción.
+- **Comprobaciones físicas:** cuatro indicadores, `#chkCuartaParte`, `#chkDobleCarga`, `#chkInvertirSigno` y `#chkAccionReaccion`, que empiezan en **Pendiente**.
 
-`Styles.css` define los colores del encabezado y el pie de página (`#006E90`) y el fondo (`#FEFFFE`).
+La página carga `UI.js` como módulo (`type="module"`), además de `anime.min.js` y el bundle de Bootstrap.
 
 ### Capa de lógica
 
-- **`Physics.js`:** módulo de cálculo puro, sin acceso al DOM. Contiene la constante de Coulomb y la función [`fuerzaElectrica`](/calculo-fuerza).
-- **`UI.js`:** escucha los inputs y actualiza los resultados en la página.
-- **`App.js`:** conecta la captura de datos de `UI.js` con el cálculo de `Physics.js`. También contiene las [comprobaciones](/calculo-fuerza#comprobaciones) pedidas por el instructor.
+- **`Physics.js`:** exporta la clase [`CoulombPhysics`](/calculo-fuerza). No accede al DOM. Calcula la fuerza base y los cuatro escenarios de [comprobación](/calculo-fuerza#comprobaciones) al crear la instancia.
+- **`UI.js`:** al pulsar `#btnSimular`, lee los inputs, crea una instancia de `CoulombPhysics`, escribe el resultado y el tipo en la página, actualiza `#chkCuartaParte` y anima las partículas con Anime.js.
+- **`App.js`:** exporta la función asíncrona [`guardarSimulacionEnBackend`](#guardar-una-simulación), que envía una simulación al backend.
 
-### Capa de backend (opcional)
+### Animación de las partículas
 
-El cálculo se hace por completo en el navegador. `Api/Save_Simulation.php` está reservado para guardar un historial de simulaciones, pero todavía no tiene implementación.
+`UI.js` mueve las partículas según el `Tipo` de la fuerza base:
 
-La propuesta actual del equipo es no usar almacenamiento persistente. En su lugar, un diccionario en JavaScript guardaría como máximo los últimos 10 cálculos (datos de entrada y resultado), y se borraría al recargar la página.
+| Tipo | Movimiento |
+| --- | --- |
+| `"Repulsion."` | q₁ se desplaza 30 px a la izquierda y q₂ 30 px a la derecha, y vuelven. |
+| `"Atraccion."` | q₁ se desplaza 20 px a la derecha y q₂ 20 px a la izquierda, y vuelven. |
+| `"Nula."` | Sin animación. |
+
+Cada animación dura 600 ms y se repite dos veces en modo `alternate`.
+
+## Guardar una simulación
+
+`App.js` exporta `guardarSimulacionEnBackend(carga1, carga2, distancia)`. La función crea una instancia de `CoulombPhysics` y envía con `fetch` una petición `POST` a `api/save_simulation.php`, con este cuerpo JSON:
+
+```json
+{
+  "fuerzaBase": { "Magnitud": 0.2157, "Tipo": "Atraccion.", "Formato": "0.2157 N." },
+  "comprobaciones": {
+    "cuartaParte": true,
+    "dobleCarga": true,
+    "invertirSigno": true,
+    "accionReaccion": true
+  }
+}
+```
+
+La función devuelve la respuesta del servidor convertida con `response.json()`. Si la petición falla, escribe el error en la consola y lo vuelve a lanzar.
+
+<Warning>
+  El backend todavía no existe. `Api/Save_Simulation.php` solo contiene un comentario, y `UI.js` aún no llama a `guardarSimulacionEnBackend`. El equipo está evaluando reemplazar el backend por un diccionario en JavaScript que guarde como máximo los últimos 10 cálculos (datos de entrada y resultado) y se borre al recargar la página.
+</Warning>
 
 ## Flujo de datos
 
@@ -50,11 +80,14 @@ La propuesta actual del equipo es no usar almacenamiento persistente. En su luga
 [ El usuario ingresa cargas y distancia ]
                  │
                  ▼
-      [ UI.js captura los valores ]
+ [ UI.js captura los valores al pulsar Calcular Fuerza ]
                  │
                  ▼
-[ Physics.js calcula F = k·|q1·q2| / r² ]
+[ new CoulombPhysics(q1, q2, r) calcula la fuerza y las comprobaciones ]
                  │
                  ▼
-  [ UI.js muestra el resultado en la página ]
+[ UI.js muestra el resultado, las comprobaciones y anima las partículas ]
+                 │
+                 ▼
+[ (Planeado) App.js envía la simulación al backend ]
 ```

@@ -1,70 +1,102 @@
 ---
 title: "Cálculo de la fuerza"
-description: "Referencia de la función fuerzaElectrica y de las comprobaciones de la Ley de Coulomb."
+description: "Referencia de la clase CoulombPhysics y de las comprobaciones de la Ley de Coulomb."
 ---
 
-## `fuerzaElectrica(q1, q2, r)`
+## `CoulombPhysics`
 
-`Physics.js` exporta `fuerzaElectrica`, que calcula la fuerza entre dos cargas puntuales con la Ley de Coulomb:
+`Physics.js` exporta la clase `CoulombPhysics`, que calcula la fuerza entre dos cargas puntuales con la Ley de Coulomb:
 
 ```text
 F = k·|q1·q2| / r²
 k = 8.9875e9 N·m²/C²
 ```
 
-### Parámetros
+Al crear una instancia, la clase calcula la fuerza base y los cuatro escenarios de [comprobación](#comprobaciones). Los resultados se leen con getters.
 
-<ParamField path="q1" type="number" required>
-  Carga 1, en coulombs (C).
+### Constructor
+
+```js
+new CoulombPhysics(carga1, carga2, distancia)
+```
+
+<ParamField path="carga1" type="number | string" default="0">
+  Carga 1, en coulombs (C). La clase la convierte con `parseFloat`.
 </ParamField>
 
-<ParamField path="q2" type="number" required>
-  Carga 2, en coulombs (C).
+<ParamField path="carga2" type="number | string" default="0">
+  Carga 2, en coulombs (C). La clase la convierte con `parseFloat`.
 </ParamField>
 
-<ParamField path="r" type="number" required>
+<ParamField path="distancia" type="number | string" default="1">
   Distancia entre las cargas, en metros (m). Debe ser mayor que `0`.
 </ParamField>
 
-<Warning>
-  La función espera las cargas en coulombs, pero los inputs de la interfaz están en µC. Multiplica cada carga por `1e-6` antes de llamar a `fuerzaElectrica`.
-</Warning>
+Como la clase usa `parseFloat`, puedes pasar directamente el `value` de los inputs de `Index.html`, que ya están en coulombs y metros.
 
-### Valor de retorno
+### Resultado de una fuerza
+
+Los getters de fuerza devuelven un objeto con estos campos:
 
 <ResponseField name="Magnitud" type="number">
   Magnitud de la fuerza en newtons.
 </ResponseField>
 
 <ResponseField name="Tipo" type="string">
-  `"Repulsion."` si las cargas tienen el mismo signo. `"Atraccion."` si tienen signos opuestos.
+  `"Repulsion."` si las cargas tienen el mismo signo. `"Atraccion."` si tienen signos opuestos. `"Nula."` si alguna carga es `0`.
 </ResponseField>
 
 <ResponseField name="Formato" type="string">
-  La magnitud como texto con 4 decimales y la unidad, por ejemplo `"21.5700 N."`. Si la fuerza es mayor o igual a `1e4` o menor o igual a `1e-4`, usa notación científica, por ejemplo `"8.9875e+9 N."`.
+  La magnitud como texto con 4 decimales y la unidad, por ejemplo `"0.2157 N."`. Si la fuerza es mayor o igual a `1e4` o menor o igual a `1e-4`, usa notación científica, por ejemplo `"8.9875e+9 N."`.
 </ResponseField>
+
+### Getters
+
+| Getter | Devuelve |
+| --- | --- |
+| `FuerzaBase` | La fuerza con los valores ingresados. |
+| `F_distanciaDoble` | La fuerza con el doble de distancia. |
+| `F_cargaDoble` | La fuerza con el doble de `carga1`. |
+| `F_otroSigno` | La fuerza con `carga1` de signo contrario. |
+| `F_mismaFuerza` | La fuerza con las cargas intercambiadas. |
+| `CumpleCuartaParte` | `true` si se cumple la prueba de distancia doble. |
+| `CumpleDobleFuerza` | `true` si se cumple la prueba de carga doble. |
+| `CumpleInvertirFuerza` | `true` si se cumple la prueba de signo invertido. |
+| `CumpleAmbasCargas` | `true` si se cumple la prueba de acción y reacción. |
+
+### `actualizarValores(carga1, carga2, distancia)`
+
+Reemplaza las cargas y la distancia de una instancia existente y vuelve a calcular la fuerza base y las comprobaciones.
 
 ### Casos especiales
 
-- Si `r` es `0` o negativo, la función lanza `Error("La distancia entre las cargas no puede ser cero ni menor.")`.
-- Si `q1` o `q2` es `0`, la función devuelve `{ magnitud: 0, tipo: "Nula.", formato: "0 N" }`. Estos campos están en minúscula, a diferencia del caso normal.
+- Si `distancia` es `0`, negativa o no es un número, el constructor y `actualizarValores` lanzan `Error("La distancia debe ser mayor a cero y un número válido.")`.
+- Si alguna carga es `0` o no es un número, la fuerza es `{ Magnitud: 0, Tipo: "Nula.", Formato: "0 N." }`.
 
 ### Ejemplo
 
 ```js
-import { fuerzaElectrica } from './Physics.js';
+import { CoulombPhysics } from './Physics.js';
 
-const resultado = fuerzaElectrica(2e-6, 3e-6, 0.05);
-// { Magnitud: 21.57, Tipo: "Repulsion.", Formato: "21.5700 N." }
+const fisica = new CoulombPhysics(2e-6, -3e-6, 0.5);
+
+fisica.FuerzaBase;
+// { Magnitud: 0.2157, Tipo: "Atraccion.", Formato: "0.2157 N." }
+
+fisica.CumpleCuartaParte; // true
 ```
 
 ## Comprobaciones
 
-`App.js` define `comprobaciones(carga1, carga2, distancia)`, con las pruebas pedidas por el instructor. La función llama a `fuerzaElectrica` y compara los resultados con una tolerancia de `1e-5`.
+`CoulombPhysics` ejecuta las cuatro pruebas pedidas por el instructor. Cada prueba compara magnitudes con una tolerancia de `1e-5`.
 
-| Prueba | Qué verifica | Variable |
+| Prueba | Qué verifica | Getter |
 | --- | --- | --- |
 | Distancia doble | Al duplicar `distancia`, la fuerza es la cuarta parte. | `CumpleCuartaParte` |
-| Carga doble | Al duplicar `carga1`, la fuerza es el doble. | `cumpleDobleFuerza` |
+| Carga doble | Al duplicar `carga1`, la fuerza es el doble. | `CumpleDobleFuerza` |
+| Signo invertido | Al cambiar el signo de `carga1`, la magnitud se conserva y el tipo cambia entre atracción y repulsión. | `CumpleInvertirFuerza` |
+| Acción y reacción | Al intercambiar `carga1` y `carga2`, la magnitud, el tipo y el formato son iguales. | `CumpleAmbasCargas` |
 
-Las pruebas que faltan están en [Pendientes](/pendientes).
+<Note>
+  Si alguna carga es `0`, la prueba de signo invertido no se cumple, porque el tipo sigue siendo `"Nula."`.
+</Note>
