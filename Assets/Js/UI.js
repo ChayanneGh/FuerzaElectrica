@@ -1,4 +1,5 @@
-import {comprobaciones} from 'App.js'; //es una mausque herramienta para mas tardeimport { CoulombPhysics } from './Physics.js';
+import {guardarSimulacionEnBackend} from 'App.js';
+//es una mausque herramienta para mas tardeimport {  } from './Physics.js';
 // Suponiendo que anime.min.js está cargado globalmente o importado localmente:
 // import anime from '../vendor/anime.min.js'; 
 
