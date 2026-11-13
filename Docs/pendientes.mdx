@@ -3,18 +3,27 @@ title: "Pendientes"
 description: "Estado actual del Simulador de Fuerza Eléctrica y tareas por completar."
 ---
 
+El simulador está en fase preliminar. El cálculo y las cuatro comprobaciones ya están completos en [`CoulombPhysics`](/calculo-fuerza). Lo que falta es conectar la interfaz y el guardado.
+
 ## Integración con la interfaz
 
-El cálculo todavía no está conectado al botón **Calcular Fuerza** de `Index.html`:
+`UI.js` todavía no funciona con `Index.html`:
 
-- El botón llama a `calculateForce()`, que aún no está definida.
-- `comprobaciones` todavía no devuelve sus resultados ni usa `export`, aunque `UI.js` la importa.
-- `UI.js` se carga sin `type="module"`, y los `import` usan rutas como `'Physics.js'` en lugar de `'./Physics.js'`. El navegador necesita ambas cosas para cargar los módulos.
+- La primera línea de `UI.js` importa `comprobaciones` desde `'App.js'`, pero `App.js` ya no exporta esa función y la ruta debería ser `'./App.js'`. El `import` de `CoulombPhysics` está en la misma línea, después de un comentario `//`, así que no se ejecuta.
+- `UI.js` busca los inputs `inputQ1`, `inputQ2` e `inputDistancia`, pero en `Index.html` se llaman `carga1`, `carga2` y `distancia`.
+- `UI.js` escribe la fuerza en `#txtFuerza`, pero en `Index.html` el resultado está en `#forceResult`.
+- `UI.js` solo actualiza `#chkCuartaParte`. Faltan `#chkDobleCarga`, `#chkInvertirSigno` y `#chkAccionReaccion`, y el texto `#txtTipoInteraccion` del área de visualización.
+- `UI.js` no captura el error de distancia inválida que lanza `CoulombPhysics`.
 
-## Comprobaciones por agregar
+## Archivos externos
 
-- Comprobar que cambiar el signo de una carga invierte el sentido de la fuerza.
-- Comprobar que la fuerza es la misma sobre ambas cargas (principio de acción y reacción).
+`Index.html` carga `Assets/Css/bootstrap.min.css`, `Assets/Css/bootstrap.bundle.min.js` y `Assets/Js/anime.min.js`, pero no están en el repositorio.
+
+## Guardado de simulaciones
+
+- `Api/Save_Simulation.php` no tiene implementación.
+- `guardarSimulacionEnBackend` envía la petición a `api/save_simulation.php`, en minúsculas. En servidores que distinguen mayúsculas, esa ruta no coincide con `Api/Save_Simulation.php`.
+- Falta decidir entre el backend en PHP y un diccionario en JavaScript con los últimos 10 cálculos. Consulta [Guardar una simulación](/arquitectura#guardar-una-simulación).
 
 ## Funcionalidades planeadas
 

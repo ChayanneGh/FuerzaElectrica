@@ -3,19 +3,25 @@ title: "Simulador de Fuerza Eléctrica"
 description: "Simulador web que calcula la fuerza eléctrica entre dos cargas puntuales con la Ley de Coulomb."
 ---
 
-El Simulador de Fuerza Eléctrica es una aplicación web que calcula la fuerza entre dos cargas puntuales a partir de sus valores y de la distancia que las separa. Usa HTML, Bootstrap 5 y JavaScript, y hace todo el cálculo en el navegador.
+El Simulador de Fuerza Eléctrica es una aplicación web que calcula la fuerza entre dos cargas puntuales a partir de sus valores y de la distancia que las separa. Usa HTML, Bootstrap 5, Anime.js y JavaScript, y hace todo el cálculo en el navegador.
+
+<Info>
+  El proyecto está en fase preliminar. El motor de cálculo y la interfaz ya existen, pero todavía no están conectados por completo. Consulta [Pendientes](/pendientes) para ver qué falta.
+</Info>
 
 ## Qué hace
 
-- Recibe la carga 1 y la carga 2 (en µC) y la distancia entre ellas (en metros).
+- Recibe la carga 1 y la carga 2 (en coulombs) y la distancia entre ellas (en metros).
 - Calcula la magnitud de la fuerza con `F = k·|q1·q2| / r²`.
-- Indica si la fuerza es de atracción o de repulsión.
+- Indica si la fuerza es de atracción o de repulsión, y anima las partículas según el tipo de interacción.
 - Muestra el resultado en notación decimal o científica, según su tamaño.
+- Ejecuta cuatro comprobaciones físicas sobre el resultado: distancia doble, carga doble, signo invertido y acción y reacción.
 
 ## Ejecutar el simulador
 
 1. Clona el repositorio.
-2. Sirve la carpeta del proyecto con un servidor local y abre `Index.html` en el navegador.
+2. Agrega las librerías locales que carga `Index.html` y que no están en el repositorio: `Assets/Css/bootstrap.min.css`, `Assets/Css/bootstrap.bundle.min.js` y `Assets/Js/anime.min.js`.
+3. Sirve la carpeta del proyecto con un servidor local y abre `Index.html` en el navegador.
 
 <Note>
   Los archivos de JavaScript usan `import` y `export`. El navegador solo los carga como módulos cuando la página se sirve desde un servidor, no al abrir `Index.html` directamente como archivo.
@@ -33,6 +39,6 @@ El Simulador de Fuerza Eléctrica es una aplicación web que calcula la fuerza e
     Estructura del proyecto y flujo de datos.
   </Card>
   <Card title="Cálculo de la fuerza" icon="bolt" href="/calculo-fuerza">
-    Referencia de `fuerzaElectrica` y de las comprobaciones.
+    Referencia de la clase `CoulombPhysics` y de las comprobaciones.
   </Card>
 </CardGroup>
