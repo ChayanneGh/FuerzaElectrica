@@ -17,22 +17,22 @@ Al crear una instancia, la clase calcula la fuerza base y los cuatro escenarios 
 ### Constructor
 
 ```js
-new CoulombPhysics(carga1, carga2, distancia)
+new CoulombPhysics(carga1, carga2, distancia);
 ```
 
 <ParamField path="carga1" type="number | string" default="0">
-  Carga 1, en coulombs (C). La clase la convierte con `parseFloat`.
+  Carga 1, en coulombs (C). La clase la convierte con `Number`.
 </ParamField>
 
 <ParamField path="carga2" type="number | string" default="0">
-  Carga 2, en coulombs (C). La clase la convierte con `parseFloat`.
+  Carga 2, en coulombs (C). La clase la convierte con `Number`.
 </ParamField>
 
 <ParamField path="distancia" type="number | string" default="1">
   Distancia entre las cargas, en metros (m). Debe ser mayor que `0`.
 </ParamField>
 
-Como la clase usa `parseFloat`, puedes pasar directamente el `value` de los inputs de `Index.html`, que ya están en coulombs y metros.
+Como la clase usa `Number`, puedes pasar directamente el `value` de los inputs de `Index.html`, que ya están en coulombs y metros.
 
 ### Resultado de una fuerza
 
@@ -43,26 +43,29 @@ Los getters de fuerza devuelven un objeto con estos campos:
 </ResponseField>
 
 <ResponseField name="Tipo" type="string">
-  `"Repulsion."` si las cargas tienen el mismo signo. `"Atraccion."` si tienen signos opuestos. `"Nula."` si alguna carga es `0`.
+  `"Repulsion."` si las cargas tienen el mismo signo. `"Atraccion."` si tienen
+  signos opuestos. `"Nula."` si alguna carga es `0`.
 </ResponseField>
 
 <ResponseField name="Formato" type="string">
-  La magnitud como texto con 4 decimales y la unidad, por ejemplo `"0.2157 N."`. Si la fuerza es mayor o igual a `1e4` o menor o igual a `1e-4`, usa notación científica, por ejemplo `"8.9875e+9 N."`.
+  La magnitud como texto con 4 decimales y la unidad, por ejemplo `"0.2157 N."`.
+  Si la fuerza es mayor o igual a `1e4` o menor o igual a `1e-4`, usa notación
+  científica, por ejemplo `"8.9875e+9 N."`.
 </ResponseField>
 
 ### Getters
 
-| Getter | Devuelve |
-| --- | --- |
-| `FuerzaBase` | La fuerza con los valores ingresados. |
-| `F_distanciaDoble` | La fuerza con el doble de distancia. |
-| `F_cargaDoble` | La fuerza con el doble de `carga1`. |
-| `F_otroSigno` | La fuerza con `carga1` de signo contrario. |
-| `F_mismaFuerza` | La fuerza con las cargas intercambiadas. |
-| `CumpleCuartaParte` | `true` si se cumple la prueba de distancia doble. |
-| `CumpleDobleFuerza` | `true` si se cumple la prueba de carga doble. |
-| `CumpleInvertirFuerza` | `true` si se cumple la prueba de signo invertido. |
-| `CumpleAmbasCargas` | `true` si se cumple la prueba de acción y reacción. |
+| Getter                 | Devuelve                                            |
+| ---------------------- | --------------------------------------------------- |
+| `FuerzaBase`           | La fuerza con los valores ingresados.               |
+| `F_distanciaDoble`     | La fuerza con el doble de distancia.                |
+| `F_cargaDoble`         | La fuerza con el doble de `carga1`.                 |
+| `F_otroSigno`          | La fuerza con `carga1` de signo contrario.          |
+| `F_mismaFuerza`        | La fuerza con las cargas intercambiadas.            |
+| `CumpleCuartaParte`    | `true` si se cumple la prueba de distancia doble.   |
+| `CumpleDobleFuerza`    | `true` si se cumple la prueba de carga doble.       |
+| `CumpleInvertirFuerza` | `true` si se cumple la prueba de signo invertido.   |
+| `CumpleAmbasCargas`    | `true` si se cumple la prueba de acción y reacción. |
 
 ### `actualizarValores(carga1, carga2, distancia)`
 
@@ -71,12 +74,14 @@ Reemplaza las cargas y la distancia de una instancia existente y vuelve a calcul
 ### Casos especiales
 
 - Si `distancia` es `0`, negativa o no es un número, el constructor y `actualizarValores` lanzan `Error("La distancia debe ser mayor a cero y un número válido.")`.
-- Si alguna carga es `0` o no es un número, la fuerza es `{ Magnitud: 0, Tipo: "Nula.", Formato: "0 N." }`.
+- Si alguna carga es `0`, la fuerza es `{ Magnitud: 0, Tipo: "Nula.", Formato: "0 N." }`.
+
+Las cargas vacías, no numéricas o no finitas y las distancias no finitas se rechazan con un error. También se rechazan escenarios con resultados no finitos o con subdesbordamiento a cero. La interfaz muestra estos errores sin conservar resultados anteriores. No se garantiza el cálculo para todo el rango de IEEE 754.
 
 ### Ejemplo
 
 ```js
-import { CoulombPhysics } from './Physics.js';
+import { CoulombPhysics } from "./Physics.js";
 
 const fisica = new CoulombPhysics(2e-6, -3e-6, 0.5);
 
@@ -90,13 +95,14 @@ fisica.CumpleCuartaParte; // true
 
 `CoulombPhysics` ejecuta las cuatro pruebas pedidas por el instructor. Cada prueba compara magnitudes con una tolerancia de `1e-5`.
 
-| Prueba | Qué verifica | Getter |
-| --- | --- | --- |
-| Distancia doble | Al duplicar `distancia`, la fuerza es la cuarta parte. | `CumpleCuartaParte` |
-| Carga doble | Al duplicar `carga1`, la fuerza es el doble. | `CumpleDobleFuerza` |
-| Signo invertido | Al cambiar el signo de `carga1`, la magnitud se conserva y el tipo cambia entre atracción y repulsión. | `CumpleInvertirFuerza` |
-| Acción y reacción | Al intercambiar `carga1` y `carga2`, la magnitud, el tipo y el formato son iguales. | `CumpleAmbasCargas` |
+| Prueba            | Qué verifica                                                                                           | Getter                 |
+| ----------------- | ------------------------------------------------------------------------------------------------------ | ---------------------- |
+| Distancia doble   | Al duplicar `distancia`, la fuerza es la cuarta parte.                                                 | `CumpleCuartaParte`    |
+| Carga doble       | Al duplicar `carga1`, la fuerza es el doble.                                                           | `CumpleDobleFuerza`    |
+| Signo invertido   | Al cambiar el signo de `carga1`, la magnitud se conserva y el tipo cambia entre atracción y repulsión. | `CumpleInvertirFuerza` |
+| Acción y reacción | Al intercambiar `carga1` y `carga2`, la magnitud, el tipo y el formato son iguales.                    | `CumpleAmbasCargas`    |
 
 <Note>
-  Si alguna carga es `0`, la prueba de signo invertido no se cumple, porque el tipo sigue siendo `"Nula."`.
+  Si alguna carga es `0`, la prueba de signo invertido no se cumple, porque el
+  tipo sigue siendo `"Nula."`.
 </Note>

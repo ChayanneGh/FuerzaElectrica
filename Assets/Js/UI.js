@@ -1,69 +1,78 @@
-import {guardarSimulacionEnBackend} from 'App.js';
-//es una mausque herramienta para mas tardeimport {  } from './Physics.js';
-// Suponiendo que anime.min.js está cargado globalmente o importado localmente:
-// import anime from '../vendor/anime.min.js'; 
+import { CoulombPhysics } from "./Physics.js";
 
-document.addEventListener('DOMContentLoaded', () => {
-    const inputQ1 = document.getElementById('inputQ1');
-    const inputQ2 = document.getElementById('inputQ2');
-    const inputDistancia = document.getElementById('inputDistancia');
-    const btnSimular = document.getElementById('btnSimular');
+document.addEventListener("DOMContentLoaded", () => {
+  const formulario = document.getElementById("formSimulador");
+  const error = document.getElementById("errorSimulacion");
+  const comprobaciones = [
+    ["chkCuartaParte", "CumpleCuartaParte"],
+    ["chkDobleCarga", "CumpleDobleFuerza"],
+    ["chkInvertirSigno", "CumpleInvertirFuerza"],
+    ["chkAccionReaccion", "CumpleAmbasCargas"],
+  ];
 
-    btnSimular.addEventListener('click', () => {
-        const q1 = inputQ1.value;
-        const q2 = inputQ2.value;
-        const r = inputDistancia.value;
-
-        // 1. Instanciamos la física pura
-        const fisica = new CoulombPhysics(q1, q2, r);
-
-        // 2. Actualizamos los textos en el HTML
-        document.getElementById('txtFuerza').textContent = fisica.FuerzaBase.Formato;
-        document.getElementById('txtTipo').textContent = fisica.FuerzaBase.Tipo;
-        
-        // Actualizamos comprobaciones físicas en la vista
-        document.getElementById('chkCuartaParte').textContent = fisica.CumpleCuartaParte ? "Cumple ✓" : "No cumple ✗";
-
-        // 3. Animación con Anime.js según el tipo de interacción
-        animarParticulas(fisica.FuerzaBase.Tipo);
-    });
+  formulario.addEventListener("submit", (evento) => {
+    evento.preventDefault();
+    error.hidden = true;
+    error.textContent = "";
+    try {
+      const fisica = new CoulombPhysics(
+        document.getElementById("carga1").value,
+        document.getElementById("carga2").value,
+        document.getElementById("distancia").value,
+      );
+      document.getElementById("forceResult").textContent =
+        fisica.FuerzaBase.Formato;
+      document.getElementById("txtTipo").textContent = fisica.FuerzaBase.Tipo;
+      document.getElementById("txtTipoInteraccion").textContent =
+        fisica.FuerzaBase.Tipo;
+      for (const [id, propiedad] of comprobaciones) {
+        const indicador = document.getElementById(id);
+        const noAplica =
+          propiedad === "CumpleInvertirFuerza" &&
+          fisica.FuerzaBase.Tipo === "Nula.";
+        indicador.textContent = noAplica
+          ? "No aplica (carga cero)"
+          : fisica[propiedad]
+            ? "Cumple ✓"
+            : "No cumple ✗";
+        indicador.className = `badge ${noAplica ? "bg-secondary" : fisica[propiedad] ? "bg-success" : "bg-danger"}`;
+      }
+      animarParticulas(fisica.FuerzaBase.Tipo);
+    } catch (causa) {
+      error.textContent = causa.message;
+      error.hidden = false;
+      document.getElementById("forceResult").textContent = "—";
+      document.getElementById("txtTipo").textContent = "Sin resultado";
+      document.getElementById("txtTipoInteraccion").textContent =
+        "Revisa los datos ingresados.";
+      for (const [id] of comprobaciones) {
+        const indicador = document.getElementById(id);
+        indicador.textContent = "Pendiente";
+        indicador.className = "badge bg-secondary";
+      }
+      animarParticulas("Nula.");
+    }
+  });
 });
 
-function animarParticulas(tipoInteraccion) {
-    const particula1 = document.getElementById('particula1');
-    const particula2 = document.getElementById('particula2');
+let animacionesActivas = [];
 
-    if (tipoInteraccion === "Repulsion.") {
-        // Si se repelen, se separan el uno del otro
-        anime({
-            targets: particula1,
-            translateX: -30,
-            direction: 'alternate',
-            loop: 2,
-            duration: 600
-        });
-        anime({
-            targets: particula2,
-            translateX: 30,
-            direction: 'alternate',
-            loop: 2,
-            duration: 600
-        });
-    } else if (tipoInteraccion === "Atraccion.") {
-        // Si se atraen, se acercan hacia el centro
-        anime({
-            targets: particula1,
-            translateX: 20,
-            direction: 'alternate',
-            loop: 2,
-            duration: 600
-        });
-        anime({
-            targets: particula2,
-            translateX: -20,
-            direction: 'alternate',
-            loop: 2,
-            duration: 600
-        });
-    }
+function animarParticulas(tipo) {
+  for (const animacion of animacionesActivas) animacion.revert();
+  animacionesActivas = [];
+  const particulas = ["particula1", "particula2"].map((id) =>
+    document.getElementById(id),
+  );
+  for (const particula of particulas)
+    particula.style.transform = "translateX(0px)";
+  if (tipo === "Nula.") return;
+  const desplazamiento = tipo === "Repulsion." ? -30 : 20;
+  animacionesActivas = particulas.map((particula, indice) =>
+    anime.animate(particula, {
+      translateX: [0, indice === 0 ? desplazamiento : -desplazamiento],
+      alternate: true,
+      loop: 1,
+      duration: 600,
+    }),
+  );
 }

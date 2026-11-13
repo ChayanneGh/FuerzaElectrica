@@ -1,149 +1,225 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Electric Force Simulator</title>
-    
-    <!-- Favicon local -->
-    <link rel="shortcut icon" href="Assets/Icon/KirbElectronHead.ico">
-    
-    <!-- Bootstrap 5 CSS (Local) -->
-    <link href="Assets/Css/bootstrap.min.css" rel="stylesheet">
-    <!-- Estilos personalizados -->
-    <link rel="stylesheet" href="Assets/Css/Styles.css">
-</head>
-<body class="d-flex flex-column min-vh-100 bg-light">
 
+    <!-- Favicon local -->
+    <link rel="shortcut icon" href="Assets/Icon/KirbElectronHead.ico" />
+
+    <!-- Bootstrap 5 CSS (Local) -->
+    <link href="Assets/Css/bootstrap.min.css" rel="stylesheet" />
+    <!-- Estilos personalizados -->
+    <link rel="stylesheet" href="Assets/Css/Styles.css" />
+  </head>
+  <body class="d-flex flex-column min-vh-100 bg-light">
     <!-- Encabezado -->
     <header class="bg-dark text-white p-3 shadow-sm">
-        <h1 class="text-center h3 mb-0 fw-bold">Simulador de Fuerza Eléctrica</h1>
+      <h1 class="text-center h3 mb-0 fw-bold">Simulador de Fuerza Eléctrica</h1>
     </header>
 
     <!-- Contenido Principal -->
     <main class="container my-4 flex-grow-1">
-        <div class="row g-4">
-            
-            <!-- COLUMNA IZQUIERDA: Controles de Simulación -->
-            <section class="col-lg-4">
-                <div class="card shadow-sm border-0">
-                    <div class="card-header bg-primary text-white fw-bold">
-                        Controles de Simulación
-                    </div>
-                    <div class="card-body">
-                        <form id="formSimulador">
-                            <!-- Carga 1 -->
-                            <div class="mb-3">
-                                <label for="carga1" class="form-label">Carga 1 ($q_1$) en Coulombs:</label>
-                                <input type="number" class="form-control" id="carga1" step="any" value="0.000002">
-                                <div class="form-text">Ej: 2e-6 o 0.000002</div>
-                            </div>
-
-                            <!-- Carga 2 -->
-                            <div class="mb-3">
-                                <label for="carga2" class="form-label">Carga 2 ($q_2$) en Coulombs:</label>
-                                <input type="number" class="form-control" id="carga2" step="any" value="-0.000003">
-                                <div class="form-text">Ej: -3e-6 o -0.000003</div>
-                            </div>
-
-                            <!-- Distancia -->
-                            <div class="mb-3">
-                                <label for="distancia" class="form-label">Distancia ($r$) en metros:</label>
-                                <input type="number" class="form-control" id="distancia" step="any" min="0.0001" value="0.5">
-                                <div class="form-text">Debe ser mayor a 0.</div>
-                            </div>
-
-                            <!-- Botón Calcular -->
-                            <button type="button" id="btnSimular" class="btn btn-success w-100 fw-bold">
-                                Calcular Fuerza
-                            </button>
-                        </form>
-                    </div>
-                </div>
-            </section>
-
-            <!-- COLUMNA DERECHA: Visualización, Resultados y Comprobaciones -->
-            <section class="col-lg-8">
-                
-                <!-- Área Visual de Partículas (Anime.js) -->
-                <div class="card shadow-sm border-0 mb-4">
-                    <div class="card-header bg-secondary text-white fw-bold">
-                        Área de Visualización
-                    </div>
-                    <div class="card-body text-center py-5 position-relative overflow-hidden bg-white border rounded" style="min-height: 180px;">
-                        <div class="d-flex justify-content-around align-items-center h-100 mt-3">
-                            <!-- Partícula 1 -->
-                            <div id="particula1" class="rounded-circle bg-danger text-white d-flex align-items-center justify-content-center fw-bold shadow" style="width: 60px; height: 60px;">
-                                q₁
-                            </div>
-                            <!-- Indicador central -->
-                            <div class="text-muted small fst-italic" id="txtTipoInteraccion">Esperando cálculo...</div>
-                            <!-- Partícula 2 -->
-                            <div id="particula2" class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center fw-bold shadow" style="width: 60px; height: 60px;">
-                                q₂
-                            </div>
-                        </div>
-                    </div>
+      <div class="row g-4">
+        <!-- COLUMNA IZQUIERDA: Controles de Simulación -->
+        <section class="col-lg-4">
+          <div class="card shadow-sm border-0">
+            <div class="card-header bg-primary text-white fw-bold">
+              Controles de Simulación
+            </div>
+            <div class="card-body">
+              <form id="formSimulador" novalidate>
+                <!-- Carga 1 -->
+                <div class="mb-3">
+                  <label for="carga1" class="form-label"
+                    >Carga 1 ($q_1$) en Coulombs:</label
+                  >
+                  <input
+                    type="number"
+                    class="form-control"
+                    id="carga1"
+                    step="any"
+                    required
+                    value="0.000002"
+                  />
+                  <div class="form-text">Ej: 2e-6 o 0.000002</div>
                 </div>
 
-                <!-- Resultados Principales -->
-                <div class="card shadow-sm border-0 mb-4">
-                    <div class="card-header bg-info text-dark fw-bold">
-                        Resultados Principales
-                    </div>
-                    <div class="card-body">
-                        <div class="row text-center">
-                            <div class="col-md-6 border-end">
-                                <h6 class="text-muted">Magnitud / Formato</h6>
-                                <h3 id="forceResult" class="fw-bold text-primary">0 N.</h3>
-                            </div>
-                            <div class="col-md-6">
-                                <h6 class="text-muted">Tipo de Interacción</h6>
-                                <h3 id="txtTipo" class="fw-bold text-secondary">Nula.</h3>
-                            </div>
-                        </div>
-                    </div>
+                <!-- Carga 2 -->
+                <div class="mb-3">
+                  <label for="carga2" class="form-label"
+                    >Carga 2 ($q_2$) en Coulombs:</label
+                  >
+                  <input
+                    type="number"
+                    class="form-control"
+                    id="carga2"
+                    step="any"
+                    required
+                    value="-0.000003"
+                  />
+                  <div class="form-text">Ej: -3e-6 o -0.000003</div>
                 </div>
 
-                <!-- Tarjeta de Comprobaciones Físicas -->
-                <div class="card shadow-sm border-0">
-                    <div class="card-header bg-dark text-white fw-bold">
-                        Comprobaciones Físicas
-                    </div>
-                    <div class="card-body">
-                        <ul class="list-group list-group-flush">
-                            <li class="list-group-item d-flex justify-content-between align-items-center">
-                                <span>Duplicar distancia reduce fuerza a la cuarta parte ($F / 4$)</span>
-                                <span id="chkCuartaParte" class="badge bg-secondary">Pendiente</span>
-                            </li>
-                            <li class="list-group-item d-flex justify-content-between align-items-center">
-                                <span>Duplicar una carga duplica la fuerza ($F \times 2$)</span>
-                                <span id="chkDobleCarga" class="badge bg-secondary">Pendiente</span>
-                            </li>
-                            <li class="list-group-item d-flex justify-content-between align-items-center">
-                                <span>Invertir signo cambia atracción/repulsión conservando magnitud</span>
-                                <span id="chkInvertirSigno" class="badge bg-secondary">Pendiente</span>
-                            </li>
-                            <li class="list-group-item d-flex justify-content-between align-items-center">
-                                <span>Principio de Acción y Reacción (Fuerza simétrica)</span>
-                                <span id="chkAccionReaccion" class="badge bg-secondary">Pendiente</span>
-                            </li>
-                        </ul>
-                    </div>
+                <!-- Distancia -->
+                <div class="mb-3">
+                  <label for="distancia" class="form-label"
+                    >Distancia ($r$) en metros:</label
+                  >
+                  <input
+                    type="number"
+                    class="form-control"
+                    id="distancia"
+                    step="any"
+                    min="0"
+                    required
+                    value="0.5"
+                  />
+                  <div class="form-text">Debe ser mayor a 0.</div>
                 </div>
 
-            </section>
-        </div>
+                <!-- Botón Calcular -->
+                <button
+                  type="submit"
+                  id="btnSimular"
+                  class="btn btn-success w-100 fw-bold"
+                >
+                  Calcular Fuerza
+                </button>
+                <p
+                  id="errorSimulacion"
+                  class="text-danger mt-3"
+                  role="alert"
+                  hidden
+                ></p>
+              </form>
+            </div>
+          </div>
+        </section>
+
+        <!-- COLUMNA DERECHA: Visualización, Resultados y Comprobaciones -->
+        <section class="col-lg-8">
+          <!-- Área Visual de Partículas (Anime.js) -->
+          <div class="card shadow-sm border-0 mb-4">
+            <div class="card-header bg-secondary text-white fw-bold">
+              Área de Visualización
+            </div>
+            <div
+              class="card-body text-center py-5 position-relative overflow-hidden bg-white border rounded"
+              style="min-height: 180px"
+            >
+              <div
+                class="d-flex justify-content-around align-items-center h-100 mt-3"
+              >
+                <!-- Partícula 1 -->
+                <div
+                  id="particula1"
+                  class="rounded-circle bg-danger text-white d-flex align-items-center justify-content-center fw-bold shadow"
+                  style="width: 60px; height: 60px"
+                >
+                  q₁
+                </div>
+                <!-- Indicador central -->
+                <div
+                  class="text-muted small fst-italic"
+                  id="txtTipoInteraccion"
+                >
+                  Esperando cálculo...
+                </div>
+                <!-- Partícula 2 -->
+                <div
+                  id="particula2"
+                  class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center fw-bold shadow"
+                  style="width: 60px; height: 60px"
+                >
+                  q₂
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Resultados Principales -->
+          <div class="card shadow-sm border-0 mb-4">
+            <div class="card-header bg-info text-dark fw-bold">
+              Resultados Principales
+            </div>
+            <div class="card-body">
+              <div class="row text-center">
+                <div class="col-md-6 border-end">
+                  <h6 class="text-muted">Magnitud / Formato</h6>
+                  <h3 id="forceResult" class="fw-bold text-primary">0 N.</h3>
+                </div>
+                <div class="col-md-6">
+                  <h6 class="text-muted">Tipo de Interacción</h6>
+                  <h3 id="txtTipo" class="fw-bold text-secondary">Nula.</h3>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tarjeta de Comprobaciones Físicas -->
+          <div class="card shadow-sm border-0">
+            <div class="card-header bg-dark text-white fw-bold">
+              Comprobaciones Físicas
+            </div>
+            <div class="card-body">
+              <ul class="list-group list-group-flush">
+                <li
+                  class="list-group-item d-flex justify-content-between align-items-center"
+                >
+                  <span
+                    >Duplicar distancia reduce fuerza a la cuarta parte ($F /
+                    4$)</span
+                  >
+                  <span id="chkCuartaParte" class="badge bg-secondary"
+                    >Pendiente</span
+                  >
+                </li>
+                <li
+                  class="list-group-item d-flex justify-content-between align-items-center"
+                >
+                  <span
+                    >Duplicar una carga duplica la fuerza ($F \times 2$)</span
+                  >
+                  <span id="chkDobleCarga" class="badge bg-secondary"
+                    >Pendiente</span
+                  >
+                </li>
+                <li
+                  class="list-group-item d-flex justify-content-between align-items-center"
+                >
+                  <span
+                    >Invertir signo cambia atracción/repulsión conservando
+                    magnitud</span
+                  >
+                  <span id="chkInvertirSigno" class="badge bg-secondary"
+                    >Pendiente</span
+                  >
+                </li>
+                <li
+                  class="list-group-item d-flex justify-content-between align-items-center"
+                >
+                  <span>Principio de Acción y Reacción (Fuerza simétrica)</span>
+                  <span id="chkAccionReaccion" class="badge bg-secondary"
+                    >Pendiente</span
+                  >
+                </li>
+              </ul>
+            </div>
+          </div>
+        </section>
+      </div>
     </main>
 
     <!-- Footer -->
     <footer class="bg-dark text-white text-center p-3 mt-auto">
-        &copy; 2026 Electric Force Simulator
+      &copy; 2026 Electric Force Simulator
     </footer>
 
     <!-- Scripts Locales -->
     <script src="Assets/Js/anime.umd.min.js"></script>
-    <script src="Assets/Css/bootstrap.bundle.min.js"></script>
+    <script src="Assets/Js/bootstrap.bundle.min.js"></script>
     <script type="module" src="Assets/Js/UI.js"></script>
-</body>
+  </body>
 </html>

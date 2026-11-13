@@ -27,30 +27,30 @@ FuerzaElectrica/
 
 `Index.html` usa la grilla de Bootstrap para dividir la página en dos columnas:
 
-- **Controles de simulación (izquierda):** inputs `#carga1` y `#carga2` (en coulombs), `#distancia` (en metros, mínimo `0.0001`) y el botón `#btnSimular` (**Calcular Fuerza**). Los valores iniciales son `0.000002`, `-0.000003` y `0.5`.
+- **Controles de simulación (izquierda):** inputs `#carga1` y `#carga2` (en coulombs), `#distancia` (en metros, valor positivo) y el botón `#btnSimular` (**Calcular Fuerza**). Los valores iniciales son `0.000002`, `-0.000003` y `0.5`.
 - **Área de visualización (derecha):** dos partículas, `#particula1` (q₁) y `#particula2` (q₂), y el texto `#txtTipoInteraccion`.
 - **Resultados principales:** `#forceResult` muestra la fuerza con formato y `#txtTipo` muestra el tipo de interacción.
 - **Comprobaciones físicas:** cuatro indicadores, `#chkCuartaParte`, `#chkDobleCarga`, `#chkInvertirSigno` y `#chkAccionReaccion`, que empiezan en **Pendiente**.
 
-La página carga `UI.js` como módulo (`type="module"`), además de `anime.min.js` y el bundle de Bootstrap.
+La página carga `UI.js` como módulo (`type="module"`) y Anime.js 4.5.0 y el bundle de Bootstrap 5.3.9.
 
 ### Capa de lógica
 
 - **`Physics.js`:** exporta la clase [`CoulombPhysics`](/calculo-fuerza). No accede al DOM. Calcula la fuerza base y los cuatro escenarios de [comprobación](/calculo-fuerza#comprobaciones) al crear la instancia.
-- **`UI.js`:** al pulsar `#btnSimular`, lee los inputs, crea una instancia de `CoulombPhysics`, escribe el resultado y el tipo en la página, actualiza `#chkCuartaParte` y anima las partículas con Anime.js.
+- **`UI.js`:** al enviar `#formSimulador` con el botón o Enter, lee los inputs, crea una instancia de `CoulombPhysics`, escribe el resultado y el tipo en la página, actualiza las cuatro comprobaciones y `#txtTipoInteraccion`, muestra los errores de entrada y anima las partículas con Anime.js.
 - **`App.js`:** exporta la función asíncrona [`guardarSimulacionEnBackend`](#guardar-una-simulación), que envía una simulación al backend.
 
 ### Animación de las partículas
 
 `UI.js` mueve las partículas según el `Tipo` de la fuerza base:
 
-| Tipo | Movimiento |
-| --- | --- |
+| Tipo           | Movimiento                                                              |
+| -------------- | ----------------------------------------------------------------------- |
 | `"Repulsion."` | q₁ se desplaza 30 px a la izquierda y q₂ 30 px a la derecha, y vuelven. |
 | `"Atraccion."` | q₁ se desplaza 20 px a la derecha y q₂ 20 px a la izquierda, y vuelven. |
-| `"Nula."` | Sin animación. |
+| `"Nula."`      | Sin animación.                                                          |
 
-Cada animación dura 600 ms y se repite dos veces en modo `alternate`.
+Cada trayecto dura 600 ms; la animación usa `alternate: true` y `loop: 1` para ir y volver. Las animaciones anteriores se revierten antes de iniciar un nuevo cálculo.
 
 ## Guardar una simulación
 
@@ -58,7 +58,11 @@ Cada animación dura 600 ms y se repite dos veces en modo `alternate`.
 
 ```json
 {
-  "fuerzaBase": { "Magnitud": 0.2157, "Tipo": "Atraccion.", "Formato": "0.2157 N." },
+  "fuerzaBase": {
+    "Magnitud": 0.2157,
+    "Tipo": "Atraccion.",
+    "Formato": "0.2157 N."
+  },
   "comprobaciones": {
     "cuartaParte": true,
     "dobleCarga": true,
@@ -71,7 +75,11 @@ Cada animación dura 600 ms y se repite dos veces en modo `alternate`.
 La función devuelve la respuesta del servidor convertida con `response.json()`. Si la petición falla, escribe el error en la consola y lo vuelve a lanzar.
 
 <Warning>
-  El backend todavía no existe. `Api/Save_Simulation.php` solo contiene un comentario, y `UI.js` aún no llama a `guardarSimulacionEnBackend`. El equipo está evaluando reemplazar el backend por un diccionario en JavaScript que guarde como máximo los últimos 10 cálculos (datos de entrada y resultado) y se borre al recargar la página.
+  El backend todavía no existe. `Api/Save_Simulation.php` solo contiene un
+  comentario, y `UI.js` aún no llama a `guardarSimulacionEnBackend`. El equipo
+  está evaluando reemplazar el backend por un diccionario en JavaScript que
+  guarde como máximo los últimos 10 cálculos (datos de entrada y resultado) y se
+  borre al recargar la página.
 </Warning>
 
 ## Flujo de datos
@@ -80,7 +88,7 @@ La función devuelve la respuesta del servidor convertida con `response.json()`.
 [ El usuario ingresa cargas y distancia ]
                  │
                  ▼
- [ UI.js captura los valores al pulsar Calcular Fuerza ]
+ [ UI.js captura los valores al enviar el formulario ]
                  │
                  ▼
 [ new CoulombPhysics(q1, q2, r) calcula la fuerza y las comprobaciones ]
