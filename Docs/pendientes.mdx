@@ -3,21 +3,11 @@ title: "Pendientes"
 description: "Estado actual del Simulador de Fuerza Eléctrica y tareas por completar."
 ---
 
-El simulador está en fase preliminar. El cálculo y las cuatro comprobaciones ya están completos en [`CoulombPhysics`](/calculo-fuerza). Lo que falta es conectar la interfaz y el guardado.
+El flujo de cálculo está conectado: valida entradas, muestra la fuerza y las cuatro comprobaciones, y anima las partículas. Las entradas inválidas muestran un aviso y borran el resultado anterior. La inversión de signo se presenta como “No aplica” para cargas cero.
 
-## Integración con la interfaz
+## Dependencias locales
 
-`UI.js` todavía no funciona con `Index.html`:
-
-- La primera línea de `UI.js` importa `comprobaciones` desde `'App.js'`, pero `App.js` ya no exporta esa función y la ruta debería ser `'./App.js'`. El `import` de `CoulombPhysics` está en la misma línea, después de un comentario `//`, así que no se ejecuta.
-- `UI.js` busca los inputs `inputQ1`, `inputQ2` e `inputDistancia`, pero en `Index.html` se llaman `carga1`, `carga2` y `distancia`.
-- `UI.js` escribe la fuerza en `#txtFuerza`, pero en `Index.html` el resultado está en `#forceResult`.
-- `UI.js` solo actualiza `#chkCuartaParte`. Faltan `#chkDobleCarga`, `#chkInvertirSigno` y `#chkAccionReaccion`, y el texto `#txtTipoInteraccion` del área de visualización.
-- `UI.js` no captura el error de distancia inválida que lanza `CoulombPhysics`.
-
-## Archivos externos
-
-`Index.html` carga `Assets/Css/bootstrap.min.css`, `Assets/Css/bootstrap.bundle.min.js` y `Assets/Js/anime.min.js`, pero no están en el repositorio.
+Bootstrap CSS 5.3.3 y Anime.js 3.2.2 se incluyen con sus licencias. No se necesita el bundle JavaScript de Bootstrap porque la interfaz no usa componentes interactivos de esa biblioteca.
 
 ## Guardado de simulaciones
 

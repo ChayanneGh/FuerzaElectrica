@@ -1,0 +1,13 @@
+{
+  "name": "fuerza-electrica",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node --test",
+    "format": "prettier --write Index.html Assets/Js/UI.js Assets/Js/Physics.js tests README.md Docs/*.mdx package.json",
+    "format:check": "prettier --check Index.html Assets/Js/UI.js Assets/Js/Physics.js tests README.md Docs/*.mdx package.json"
+  },
+  "devDependencies": {
+    "prettier": "3.6.2"
+  }
+}
