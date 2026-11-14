@@ -33,7 +33,12 @@ footer {
     text-align: center;
 }
 
-colotes {
+#particula1, #particula2 {
+    width: 60px;
+    height: 60px
+}
+
+colores {
     background-color: #FEFFFE;
     background-color: #E9EBF8;
     background-color: #B4B8C5;

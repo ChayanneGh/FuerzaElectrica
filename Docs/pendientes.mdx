@@ -20,3 +20,14 @@ Bootstrap 5.3.9 y Anime.js 4.5.0 se incluyen en el repositorio. El HTML carga el
 - Una opción que muestre las fórmulas.
 - Un aviso cuando la fuerza supere un límite indicado.
 - Una tabla de fuerzas para cinco distancias positivas.
+- colocar senales correspondientes al tipo de movimiento:
+```import { animate, spring } from 'animejs';
+
+animate('.triangle', {
+  rotate: 180,
+  ease: spring({
+    bounce: -0.46,
+    duration: 388
+  })
+});
+```
