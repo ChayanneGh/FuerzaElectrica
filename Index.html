@@ -25,7 +25,7 @@
                     <h6 class="card-header bg-primary text-white fw-bold">
                         Controles de Simulación
                     </h6>
-                    <div class="card-body">
+                    <div class="card-body pb-1">
                         <form id="formSimulador" novalidate>
                             <!-- Carga 1 -->
                             <div class="mb-3">
@@ -58,9 +58,41 @@
                             <p id="errorSimulacion" class="text-danger mt-3" role="alert" hidden></p>
                         </form>
                     </div>
+
+                    <!-- COLUMNA IZQUIERDA: Formula -->
+                    <div class="card-body pt-0">
+                        <button class="btn btn-primary w-100 text-white fw-bold" 
+                                type="button" 
+                                data-bs-toggle="collapse" 
+                                data-bs-target="#miBloque" 
+                                aria-expanded="false" 
+                                aria-controls="miBloque">
+                            Formula de Coulomb<samp class="small mx-3">▼</samp>
+                        </button>
+                        <div class="collapse w-100" id="miBloque">
+                            <div class="d-inline-block card-body w-100">
+                                <!-- Numerador -->
+                                <div class="pb-2 fs-5 fw-bold text-dark d-flex align-items-center justify-content-center gap-1">
+                                    <span>
+                                        <samp class="text-primary">F </samp>
+                                        = k |</span>
+                                    <span class="badge rounded-circle bg-danger text-white d-inline-flex align-items-center justify-content-center" style="width: 32px; height: 32px;">q₁</span>
+                                    <span class="mx-1">·</span>
+                                    <span class="badge rounded-circle bg-primary text-white d-inline-flex align-items-center justify-content-center" style="width: 32px; height: 32px;">q₂</span>
+                                    <span>|</span>
+                                </div>
+                                <!-- Línea de fracción -->
+                                <hr class="my-1 border-dark opacity-75">
+                                <!-- Denominador -->
+                                <div class="pt-1 fs-5 fw-bold text-dark text-center">
+                                    r<sup class="mx-1 fw-normal">2</sup>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </section>
-
+            
             <!-- COLUMNA DERECHA: Visualización, Resultados y Comprobaciones -->
             <section class="col-lg-8">
                 <!-- Área Visual de Partículas (Anime.js) -->
@@ -140,6 +172,18 @@
     <footer class="bg-dark text-white text-center p-3 mt-auto">
         &copy; 2026 Electric Force Simulator
     </footer>
+
+    <section class="card-body p-2">
+    <!-- Botón desplegable elegante -->
+    <button class="btn btn-primary w-100 text-white fw-bold d-flex justify-content-between align-items-center shadow-sm py-2 px-3 rounded" 
+            type="button" 
+            data-bs-toggle="collapse" 
+            data-bs-target="#miBloque" 
+            aria-expanded="true" 
+            aria-controls="miBloque">
+        <span>📖 Fórmula de la Ley de Coulomb</span>
+        <samp class="small">▼</samp>
+    </button>
 
     <script src="Assets/Js/anime.umd.min.js"></script>
     <script src="Assets/Js/bootstrap.bundle.min.js"></script>
