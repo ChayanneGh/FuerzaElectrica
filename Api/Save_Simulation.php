@@ -1,1 +1,0 @@
-//creo que seria mejor usar un diccionario que una base de datos
