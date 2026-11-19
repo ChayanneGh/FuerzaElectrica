@@ -13,7 +13,67 @@
 <body class="d-flex flex-column min-vh-100 bg-light">
     <!-- Encabezado -->
     <header class="bg-dark text-white p-3 shadow-sm">
-        <h1 class="text-center h3 mb-0 fw-bold">Simulador de Fuerza Eléctrica</h1>
+        <div class="container position-relative">
+            <h1 class="text-center h3 mb-0 fw-bold px-5">Simulador de Fuerza Eléctrica</h1>
+            <button id="btnAyuda" class="btn btn-outline-light help-button" type="button"
+                aria-label="Mostrar ayuda" title="Ayuda" aria-controls="panelAyuda" aria-expanded="false">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 16 16"
+                    fill="currentColor" aria-hidden="true" focusable="false">
+                    <path
+                        d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
+                    <path
+                        d="M5.255 5.786a.237.237 0 0 0 .241.247h.825c.138 0 .248-.113.266-.25.09-.656.54-1.134 1.342-1.134.686 0 1.314.343 1.314 1.168 0 .635-.374.927-.965 1.371-.673.489-1.206 1.06-1.168 2.003l.003.217a.25.25 0 0 0 .25.246h.811a.25.25 0 0 0 .25-.25v-.105c0-.718.273-.927 1.01-1.478.609-.456 1.188-.962 1.188-2.077 0-1.661-1.275-2.482-2.91-2.482-1.541 0-2.762.796-2.846 2.524" />
+                    <path d="M8 12.5a1 1 0 1 0 0-2 1 1 0 0 0 0 2" />
+                </svg>
+            </button>
+            <button id="btnHistorial" class="btn btn-outline-light history-button" type="button"
+                aria-label="Mostrar historial" title="Historial" aria-controls="panelHistorial"
+                aria-expanded="false">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+                    viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+                    <path
+                        d="M8.515 1.019A7 7 0 0 0 8 1V0a8 8 0 1 1-7.446 5.075l.92.392A7 7 0 1 0 8.5 1.02z" />
+                    <path
+                        d="M8.5 3.5a.5.5 0 0 0-1 0v4.25c0 .166.083.322.222.416l3 2a.5.5 0 1 0 .555-.832L8.5 7.482z" />
+                    <path
+                        d="M.5 4.5a.5.5 0 0 1 .5-.5H5a.5.5 0 0 1 0 1H1v4a.5.5 0 0 1-1 0z" />
+                </svg>
+            </button>
+            <section id="panelAyuda" class="header-popover help-panel" aria-labelledby="tituloAyuda" hidden>
+                <div class="bg-white text-dark rounded p-3 shadow">
+                    <h2 id="tituloAyuda" class="h6 fw-bold">¿Cómo funciona el simulador?</h2>
+                    <ul class="list-unstyled small mb-0">
+                        <li class="mb-2">
+                            <strong>1. Ingresa las cargas:</strong> escribe q₁ y q₂ en coulombs. El signo indica si
+                            cada carga es positiva o negativa.
+                        </li>
+                        <li class="mb-2">
+                            <strong>2. Ingresa la distancia:</strong> escribe la separación entre las cargas en metros;
+                            debe ser mayor que cero.
+                        </li>
+                        <li class="mb-2">
+                            <strong>3. Calcula:</strong> pulsa «Calcular Fuerza» para aplicar la ley de Coulomb
+                            (F = k|q₁q₂|/r²).
+                        </li>
+                        <li class="mb-2">
+                            <strong>Interpreta el resultado:</strong> cargas del mismo signo se repelen y de signos
+                            opuestos se atraen. Si alguna carga es cero, la fuerza es nula.
+                        </li>
+                        <li>
+                            Las partículas muestran el signo por color: positivas en azul y negativas en rojo. Las
+                            comprobaciones muestran cómo cambia la fuerza en distintos escenarios.
+                        </li>
+                    </ul>
+                </div>
+            </section>
+            <section id="panelHistorial" class="header-popover history-panel" aria-labelledby="tituloHistorial" hidden>
+                <div class="bg-white text-dark rounded p-3 shadow">
+                    <h2 id="tituloHistorial" class="h6 fw-bold">Últimos cálculos</h2>
+                    <p id="mensajeHistorialVacio" class="mb-0">Aún no hay cálculos en esta página.</p>
+                    <ol id="listaHistorial" class="list-group list-unstyled"></ol>
+                </div>
+            </section>
+        </div>
     </header>
 
     <!-- Contenido Principal -->
