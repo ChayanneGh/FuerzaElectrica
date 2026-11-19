@@ -11,9 +11,8 @@ Bootstrap 5.3.9 y Anime.js 4.5.0 se incluyen en el repositorio. El HTML carga el
 
 ## Guardado de simulaciones
 
-- `Api/Save_Simulation.php` no tiene implementación.
-- `guardarSimulacionEnBackend` envía la petición a `api/save_simulation.php`, en minúsculas. En servidores que distinguen mayúsculas, esa ruta no coincide con `Api/Save_Simulation.php`.
-- Falta decidir entre el backend en PHP y un diccionario en JavaScript con los últimos 10 cálculos. Consulta [Guardar una simulación](/arquitectura#guardar-una-simulación).
+- El simulador guarda los últimos 10 cálculos en memoria con `SaveSimulation`. Consulta [Historial de cálculos](/arquitectura#historial-de-cálculos).
+- El repositorio ya no incluye `Api/Save_Simulation.php`, pero `App.js` sigue exportando `guardarSimulacionEnBackend`, que envía la petición a `api/save_simulation.php`. Ningún archivo usa esa función. Consulta [Guardar una simulación en un backend](/arquitectura#guardar-una-simulación-en-un-backend).
 
 ## Funcionalidades planeadas
 

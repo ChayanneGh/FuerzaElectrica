@@ -6,8 +6,9 @@ description: "Simulador web que calcula la fuerza eléctrica entre dos cargas pu
 El Simulador de Fuerza Eléctrica es una aplicación web que calcula la fuerza entre dos cargas puntuales a partir de sus valores y de la distancia que las separa. Usa HTML, Bootstrap 5, Anime.js y JavaScript, y hace todo el cálculo en el navegador.
 
 <Info>
-  El motor y la interfaz están conectados. El guardado de simulaciones sigue
-  pendiente. Consulta [Pendientes](/pendientes) para ver qué falta.
+  El motor y la interfaz están conectados, y el historial guarda los últimos 10
+  cálculos en el navegador. Consulta [Pendientes](/pendientes) para ver qué
+  falta.
 </Info>
 
 ## Qué hace
@@ -16,7 +17,9 @@ El Simulador de Fuerza Eléctrica es una aplicación web que calcula la fuerza e
 - Calcula la magnitud de la fuerza con `F = k·|q1·q2| / r²`.
 - Indica si la fuerza es de atracción o de repulsión, y anima las partículas según el tipo de interacción.
 - Muestra el resultado en notación decimal o científica, según su tamaño.
-- Ejecuta cuatro comprobaciones físicas sobre el resultado: distancia doble, carga doble, signo invertido y acción y reacción.
+- Ejecuta cuatro comprobaciones físicas sobre el resultado: distancia doble, carga doble, signo invertido y acción y reacción, y muestra el valor obtenido en cada una.
+- Guarda los últimos 10 cálculos en un historial que se borra al recargar la página.
+- Incluye un panel de ayuda y una sección desplegable con la fórmula de Coulomb.
 
 ## Ejecutar el simulador
 
