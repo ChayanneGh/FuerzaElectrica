@@ -8,11 +8,105 @@ body {
 
 header {
     --BB: 10px;
+    position: relative;
+    z-index: 1040;
     border-bottom-left-radius: var(--BB);
     border-bottom-right-radius: var(--BB);
     background-color: #006E90;
     padding: 20px;
     text-align: center;
+}
+
+.help-button,
+.history-button {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.help-button {
+    left: 0;
+}
+
+.history-button {
+    right: 0;
+}
+
+.header-popover {
+    position: absolute;
+    top: calc(100% + 1rem);
+    z-index: 1050;
+    width: 33%;
+    min-width: 18rem;
+    max-width: calc(100vw - 2rem);
+}
+
+.header-popover > div {
+    border: 3px solid var(--bs-dark, #212529);
+    box-sizing: border-box;
+    max-height: 50vh;
+    overflow-y: auto;
+}
+
+.help-panel {
+    left: 0;
+}
+
+.history-panel {
+    right: 0;
+}
+
+#listaHistorial .list-group-item {
+    overflow-wrap: anywhere;
+}
+
+.history-record {
+    --bs-table-bg: transparent;
+}
+
+.history-charge {
+    display: inline-flex;
+    width: 2rem;
+    height: 2rem;
+    flex: 0 0 2rem;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    color: #fff;
+    font-size: .8rem;
+    font-weight: 700;
+    box-shadow: 0 .125rem .25rem rgba(0, 0, 0, .2);
+}
+
+.history-charge-q1 {
+    background: linear-gradient(145deg, #f87171, #b91c1c);
+}
+
+.history-charge-q2 {
+    background: linear-gradient(145deg, #60a5fa, #1d4ed8);
+}
+
+.history-label {
+    display: block;
+    color: #6c757d;
+    font-size: .75rem;
+    letter-spacing: .03em;
+    text-transform: uppercase;
+}
+
+.history-value {
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+}
+
+@media (max-width: 575.98px) {
+    .header-popover {
+        left: 50%;
+        right: auto;
+        width: calc(100vw - 2rem);
+        min-width: 0;
+        transform: translateX(-50%);
+    }
 }
 
 main {
