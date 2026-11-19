@@ -64,14 +64,33 @@ test("formulario real: resultados, indicadores, errores, recuperación y animaci
       {
         value: m[0].match(/\bvalue="([^"]*)"/)?.[1],
         textContent: "",
+        className: m[0].match(/\bclass="([^"]*)"/)?.[1] ?? "",
         style: {},
         hidden: true,
+        classList: {
+          add(...classes) {
+            const current = new Set(
+              this.element.className.split(/\s+/).filter(Boolean),
+            );
+            for (const name of classes) current.add(name);
+            this.element.className = [...current].join(" ");
+          },
+          remove(...classes) {
+            const removed = new Set(classes);
+            this.element.className = this.element.className
+              .split(/\s+/)
+              .filter((name) => name && !removed.has(name))
+              .join(" ");
+          },
+          element: null,
+        },
         addEventListener(event, fn) {
           this[event] = fn;
         },
       },
     ]),
   );
+  for (const element of elements.values()) element.classList.element = element;
   const calls = [];
   let reversiones = 0;
   const anime = {
@@ -110,6 +129,12 @@ test("formulario real: resultados, indicadores, errores, recuperación y animaci
     submit();
     assert.equal(el("forceResult").textContent, "0.2157 N.");
     assert.equal(el("txtTipoInteraccion").textContent, "Atraccion.");
+    assert.equal(el("resultadoCuartaParte").textContent, "0.0539 N.");
+    assert.equal(el("resultadoDobleCarga").textContent, "0.4314 N.");
+    assert.equal(el("resultadoInvertirSigno").textContent, "Repulsion.");
+    assert.equal(el("resultadoAccionReaccion").textContent, "0.2157 N.");
+    assert.ok(el("particula1").className.includes("bg-primary"));
+    assert.ok(el("particula2").className.includes("bg-danger"));
     for (const id of [
       "chkCuartaParte",
       "chkDobleCarga",
@@ -127,6 +152,9 @@ test("formulario real: resultados, indicadores, errores, recuperación y animaci
     el("carga2").value = "3e-6";
     submit();
     assert.equal(el("txtTipo").textContent, "Repulsion.");
+    assert.equal(el("resultadoInvertirSigno").textContent, "Atraccion.");
+    assert.ok(el("particula1").className.includes("bg-primary"));
+    assert.ok(el("particula2").className.includes("bg-primary"));
     assert.deepEqual(
       calls.splice(0).map((c) => c.translateX),
       [
@@ -134,12 +162,26 @@ test("formulario real: resultados, indicadores, errores, recuperación y animaci
         [0, 30],
       ],
     );
+    el("carga1").value = "-2e-6";
+    submit();
+    assert.ok(el("particula1").className.includes("bg-danger"));
+    assert.ok(el("particula2").className.includes("bg-primary"));
+    calls.splice(0);
     el("carga1").value = "0";
     submit();
     assert.equal(el("forceResult").textContent, "0 N.");
+    for (const id of [
+      "resultadoCuartaParte",
+      "resultadoDobleCarga",
+      "resultadoAccionReaccion",
+    ])
+      assert.equal(el(id).textContent, "0 N.");
+    assert.equal(el("resultadoInvertirSigno").textContent, "Nula.");
+    assert.ok(el("particula1").className.includes("bg-secondary"));
+    assert.ok(el("particula2").className.includes("bg-primary"));
     assert.equal(el("chkInvertirSigno").textContent, "No aplica (carga cero)");
     assert.equal(calls.length, 0);
-    assert.equal(reversiones, 4);
+    assert.equal(reversiones, 6);
     assert.equal(el("particula1").style.transform, "translateX(0px)");
     for (const [id, value] of [
       ["carga1", ""],
@@ -156,7 +198,16 @@ test("formulario real: resultados, indicadores, errores, recuperación y animaci
       assert.equal(el("errorSimulacion").hidden, false);
       assert.ok(el("errorSimulacion").textContent);
       assert.equal(el("forceResult").textContent, "—");
+      for (const id of [
+        "resultadoCuartaParte",
+        "resultadoDobleCarga",
+        "resultadoInvertirSigno",
+        "resultadoAccionReaccion",
+      ])
+        assert.equal(el(id).textContent, "—");
       assert.equal(el("chkCuartaParte").textContent, "Pendiente");
+      assert.ok(el("particula1").className.includes("bg-secondary"));
+      assert.ok(el("particula2").className.includes("bg-secondary"));
     }
     el("carga1").value = "2e-6";
     el("carga2").value = "-3e-6";
