@@ -1,17 +1,3 @@
-## Ejecutar y verificar
-
-Sirve la raíz con un servidor estático (por ejemplo, `python3 -m http.server 8000`) y abre `http://localhost:8000/Index.html`. Bootstrap 5.3.9 y Anime.js 4.5.0 están incluidos, sin descargas en tiempo de ejecución.
-
-Para las pruebas y el formato usa Node.js 22 o posterior:
-
-```sh
-npm ci
-npm test
-npm run format:check
-```
-
-El simulador valida cargas finitas y distancia positiva, muestra las cuatro comprobaciones y permite calcular con el botón o Enter. El guardado sigue pendiente; no se envían simulaciones al backend.
-
 ## 👥 Autores
 
 | Autor        | Rol / Descripción |
